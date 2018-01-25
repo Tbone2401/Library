@@ -1,0 +1,52 @@
+﻿@using System.Activities.Statements
+@model Library.ViewModels.AuthorAndBooksViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Author</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorOfBooks.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorOfBooks.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorOfBooks.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorOfBooks.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorOfBooks.BirthDay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorOfBooks.BirthDay)
+        </dd>
+        <dt>
+            Books
+        </dt>
+        @foreach (var book in Model.BooksOfAuthor)
+        {
+            <dd>
+                @book.Title
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AuthorOfBooks.AuthorId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

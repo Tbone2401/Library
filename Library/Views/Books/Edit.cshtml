@@ -1,0 +1,114 @@
+﻿@using System.Configuration
+@using Library.Extensions
+@using Library.ViewModels
+@using Library.Models
+@model BookAndAuthorName
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "Books", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Book</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Book.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Book.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Book.Title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Book.Pages, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Book.Pages, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Book.Pages, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Book.ISBN, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Book.ISBN, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Book.ISBN, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Book.Genres, htmlAttributes: new { @class = "control-label col" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(m => m.Book.Genres, new SelectList(Enum.GetNames(typeof(Genre))), new { @class = "chosen", multiple = "multiple" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.AuthorName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AuthorName, new { htmlAttributes = new { @class = "form-control", id = "author-lookup" } })
+            @Html.ValidationMessageFor(model => model.AuthorName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col">Current photo</label>
+        <img class="book-thumbnail img-fluid col-2" src=@string.Format(ConfigurationManager.AppSettings["PictureStorageUrl"] + ConfigurationManager.AppSettings["PictureFolder"] + "//" + Model.Book.PictureName) />
+        <label class="control-label col">Photo</label>
+        <div class="col-md-10">
+            <input type="file" name="picture" />
+        </div>
+    </div>
+
+    <div id="file-inputs"></div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Edit" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+@using (Html.BeginForm("Upload", "Image", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/UploadFile.js")
+    @Scripts.Render("~/Scripts/chosen.jquery.js")
+    @Scripts.Render("~/Scripts/FindAuthorAjax.js")
+
+    <script>
+        jQuery(document).ready(function () {
+            jQuery(".chosen").chosen();
+            var genres = new Array(@Model.Book.Genres.Count);
+            @for (int i = 0; i < Model.Book.Genres.Count; i++)
+            {
+                @:genres[@i] = "@Model.Book.Genres[i].GetDisplayName()";
+            }
+            resizeChosen();
+            jQuery(".chosen").val(genres).trigger("chosen:updated");
+        });
+        jQuery(window).on('load',
+            function() {
+                jQuery(window).on('resize', resizeChosen);
+
+            });
+        function resizeChosen() {
+            jQuery(".chosen-container").each(function () {
+                jQuery(this).width(jQuery(".text-box").first().outerWidth());
+                jQuery(this).find("chosen-search-input.default").first().width('100%');
+                jQuery(".chosen").trigger("chosen:updated");
+            });          
+        }
+    </script>
+}

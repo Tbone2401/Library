@@ -1,0 +1,9 @@
+﻿@using Library.Models
+@model Library.Models.Book
+<div class="container">
+    <h2>@Model.Title</h2>
+    <p>@Model.BookAuthor</p>
+    <p>@Model.Pages</p>
+    @foreach(var genre in Model.Genres)
+    {<p>@genre</p>}
+</div>

@@ -1,0 +1,64 @@
+﻿@using System.Configuration
+@model Library.ViewModels.BookAndAuthorName
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+<h4>Book</h4>
+<div class="d-flex">
+    <div class="row">
+        <div class="col-3">
+            <img class="img-fluid" src=@string.Format(ConfigurationManager.AppSettings["PictureStorageUrl"] 
+                                      + ConfigurationManager.AppSettings["PictureFolder"] 
+                                      + "//" + Model.Book.PictureName) />
+        </div>
+        <div class="col-4">
+            <table class="table table-responsive-sm table-extra-condensed table-borderless">
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            @Html.DisplayNameFor(model => model.Book.Title)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Book.Title)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            @Html.DisplayNameFor(model => model.Book.Pages)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Book.Pages)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            @Html.DisplayNameFor(model => model.Book.ISBN)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Book.ISBN)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            @Html.DisplayNameFor(model => model.AuthorName)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.AuthorName)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row  justify-content-end">
+        <div>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Book.Id }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        </div>
+</div>
